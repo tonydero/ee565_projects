@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 
 def circGauss(N, mean=(0,0), variance=1):
@@ -9,17 +10,16 @@ def circGauss(N, mean=(0,0), variance=1):
     """
     samples_x1 = []
     samples_x2 = []
-    np.random.seed(83704)
 
     for i in range(N):
-        new_sample_x1 = np.random.normal(mean[0], variance)
-        new_sample_x2 = np.random.normal(mean[1], variance)
+        new_sample_x1 = random.gauss(0, variance)
+        new_sample_x2 = random.gauss(0, variance)
 
         samples_x1.append(new_sample_x1)
         samples_x2.append(new_sample_x2)
 
-    samples_x1 = np.array(samples_x1)
-    samples_x2 = np.array(samples_x2)
+    samples_x1 = np.array(samples_x1) + mean[0]
+    samples_x2 = np.array(samples_x2) + mean[1]
     samples = np.array((samples_x1,samples_x2))
 
     return samples

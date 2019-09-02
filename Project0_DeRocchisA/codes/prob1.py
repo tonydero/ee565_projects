@@ -1,18 +1,29 @@
-# Created by Tony DeRocchis
-# on 2019.08.24 at 23:33 UTC
 import numpy as np
-from bokeh.plotting import figure, output_file, show
 from requiredFunctions.circGauss import circGauss
 import matplotlib.pyplot as plt
 
 
 """
-Main script for the solution to Project 0 for EE 565 Fall 2019
+b) Use your function to generate a data set consisting of samples drawn from
+two circular symmetric multi-variate Gaussian distribu-tions in two dimensions.
+Center one distribution at the origin andone at the point(5, 5). Both
+distributions should use σ²=3. Assume that samples drawn from the two circular
+distributions in equal proportions.
 """
-samples_0 = circGauss(434, (0, 0), 1)
-samples_5 = circGauss(434, (5, 2), 1)
+np.random.seed(83704)
+samples_0 = circGauss(250, (0, 0), 3)
+samples_5 = circGauss(250, (5, 5), 3)
 
-plt.scatter(samples_0[0], samples_0[1])
-plt.scatter(samples_5[0], samples_5[1])
+plt.axes(aspect=1)
+plt.xlim(-5, 10)
+plt.ylim(-5, 10)
+plt.xticks([-5, 0, 5, 10])
+plt.yticks([-5, 0, 5, 10])
+plt.tick_params(direction='in', top=1, right=1)
+plt.scatter(samples_0[0], samples_0[1], s=0.33, c='b')
+plt.scatter(samples_5[0], samples_5[1], s=0.33, c='b')
+plt.xlabel('$x_{1}$')
+plt.ylabel('$x_{2}$')
+plt.grid(color='k', linestyle='--', alpha=0.2)
 plt.show()
 
