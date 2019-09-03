@@ -13,13 +13,13 @@ def concentGauss(N, r=5, var_center=1, var_outer=1):
 
     for i in range(N):
         if i%2 == 0:
-            new_sample_x1 = random.gauss(0, var_center)
-            new_sample_x2 = random.gauss(0, var_center)
+            new_sample_x1 = random.gauss(0, np.sqrt(var_center))
+            new_sample_x2 = random.gauss(0, np.sqrt(var_center))
 
             classes.append(1)
 
         elif i%2 == 1:
-            new_sample_r = random.gauss(r, var_outer)
+            new_sample_r = random.gauss(r, np.sqrt(var_outer))
             new_sample_theta = random.uniform(0, 2*np.pi)
             new_sample_x1 = new_sample_r*np.cos(new_sample_theta)
             new_sample_x2 = new_sample_r*np.sin(new_sample_theta)

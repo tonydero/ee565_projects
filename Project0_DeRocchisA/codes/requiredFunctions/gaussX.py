@@ -12,7 +12,7 @@ def gaussX(N, variance=1):
     classes = []
 
     for i in range(N):
-        new_sample_r = random.gauss(0, variance)
+        new_sample_r = random.gauss(0, np.sqrt(variance))
         new_sample_theta = random.uniform(0, 2*np.pi)
         new_sample_x1 = new_sample_r*np.cos(new_sample_theta)
         new_sample_x2 = new_sample_r*np.sin(new_sample_theta)

@@ -12,8 +12,8 @@ def circGauss(N, mean=(0,0), variance=1):
     samples_x2 = []
 
     for i in range(N):
-        new_sample_x1 = random.gauss(0, variance)
-        new_sample_x2 = random.gauss(0, variance)
+        new_sample_x1 = random.gauss(0, np.sqrt(variance))
+        new_sample_x2 = random.gauss(0, np.sqrt(variance))
 
         samples_x1.append(new_sample_x1)
         samples_x2.append(new_sample_x2)
