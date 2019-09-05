@@ -1,6 +1,7 @@
 import numpy as np
 from requiredFunctions.doublemoon import doublemoon
 import matplotlib.pyplot as plt
+from matplotlib import rc
 
 
 """
@@ -8,8 +9,11 @@ b) Generate a plot of an example double moon distribution N=500 samples,
 d=0, r=1, and w=0.6 where members of class C1 are plotted as “blue +” and
 C2 are plotted as “green x”.
 """
+# generate data set
 np.random.seed(83704)
 samples = doublemoon(500, 0, 1, 0.6)
+
+# split into classes
 samples1 = []
 samples2 = []
 for sample in samples.T:
@@ -18,9 +22,16 @@ for sample in samples.T:
     else:
         samples2.append(sample)
 
+# convert back to arrays
 samples1 = np.array(samples1)
 samples2 = np.array(samples2)
 
+# set font attributes
+font = {'size'   : 16}
+rc('font', **font)
+rc('text', usetex='True')
+
+# plot
 plt.axes(aspect=1)
 plt.xlim(-3, 3)
 plt.ylim(-3, 3)

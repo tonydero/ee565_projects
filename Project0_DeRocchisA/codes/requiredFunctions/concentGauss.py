@@ -6,32 +6,40 @@ def concentGauss(N, r=5, var_center=1, var_outer=1):
     """
     a) Write a function named “concentGauss” that returns samples drawn from the
     distribution along with the corresponding class labels.
+
+    Inputs:
+                 N - desired number of samples
+                 r - radius mean of Gaussian annulus
+        var_center - variance of center circular symmetric Gaussian
+         var_outer - variance of Gaussian annulus
     """
-    samples_x1 = []
-    samples_x2 = []
-    classes = []
+    # split N approximately equally
+    first_half = int(N/2)
+    second_half = N - first_half
 
-    for i in range(N):
-        if i%2 == 0:
-            new_sample_x1 = random.gauss(0, np.sqrt(var_center))
-            new_sample_x2 = random.gauss(0, np.sqrt(var_center))
+    # identify labels for the classes
+    label_outer = -1
+    label_center = 1
 
-            classes.append(1)
+    # generate samples of gaussian annulus
+    samples_outer_r = r + var_outer*np.random.randn(first_half,1)
+    samples_outer_theta = np.random.rand(first_half,1)*2*np.pi
+    samples_outer_x1 = samples_outer_r*np.cos(samples_outer_theta)
+    samples_outer_x2 = samples_outer_r*np.sin(samples_outer_theta)
 
-        elif i%2 == 1:
-            new_sample_r = random.gauss(r, np.sqrt(var_outer))
-            new_sample_theta = random.uniform(0, 2*np.pi)
-            new_sample_x1 = new_sample_r*np.cos(new_sample_theta)
-            new_sample_x2 = new_sample_r*np.sin(new_sample_theta)
+    # generate samples of center circular symmetric gaussian
+    samples_center_x1 = var_center*np.random.randn(second_half,1)
+    samples_center_x2 = var_center*np.random.randn(second_half,1)
 
-            classes.append(-1)
+    # combine both classes into single vectors for each coordinate
+    samples_x1 = np.append(samples_outer_x1, samples_center_x1)
+    samples_x2 = np.append(samples_outer_x2, samples_center_x2)
 
-        samples_x1.append(new_sample_x1)
-        samples_x2.append(new_sample_x2)
+    # generate label vector
+    classes = np.append(label_outer*np.ones((first_half, 1)),
+                        label_center*np.ones((second_half, 1)))
 
-    samples_x1 = np.array(samples_x1)
-    samples_x2 = np.array(samples_x2)
-    classes = np.array(classes)
+    # combine all into single Nx3 array
     samples = np.array((samples_x1,samples_x2,classes))
 
     return samples

@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import rc
 
 
 """
 Load the file "faithful.txt" and replicate the plot below [fig 11].
 """
+# load data from file
 with open('../data/faithful.txt','r') as f:
     x1_data = []
     x2_data = []
@@ -13,8 +15,15 @@ with open('../data/faithful.txt','r') as f:
         x1_data.append(float(x1_point))
         x2_data.append(float(x2_point))
 
+# convert to array
 faithful_data = np.array((x1_data,x2_data))
 
+# set font attributes
+font = {'size'   : 16}
+rc('font', **font)
+rc('text', usetex='True')
+
+# plot
 plt.axes(aspect=0.08)
 plt.xlim(1, 6)
 plt.ylim(40, 100)

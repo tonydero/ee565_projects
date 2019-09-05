@@ -6,20 +6,21 @@ def noisySin(N, noise_var=1):
     """
     a) Write a function named "noisySin" that returns "N" samples drawn from the
     data set.
+
+    Inputs:
+                N - desired number of samples
+        noise_var - variance for noise to be added to sinusoid
     """
-    x_samples = []
-    t_samples = []
-    for i in range(N):
-        x_n = random.uniform(0, 1)
-        noise = random.gauss(0, noise_var)
-        t_n = np.sin(2*np.pi*x_n) + noise
-         
-        x_samples.append(x_n)
-        t_samples.append(t_n)
+    # generate x coordinate for N uniform samples from 0 to 1
+    x_samples = np.random.rand(N, 1)
 
-    x_samples = np.array(x_samples)
-    t_samples = np.array(t_samples)
+    # generate Gaussian noise for each of N samples
+    noise = noise_var*np.random.randn(N, 1)
 
+    # calculate the sinusoidal amplitude for each of N samples and add noise
+    t_samples = np.sin(2*np.pi*x_samples) + noise
+
+    # combine the x coordinate and amplitude for each of the N samples
     samples = np.array((x_samples, t_samples))
 
     return samples

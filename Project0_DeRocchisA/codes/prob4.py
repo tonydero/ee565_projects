@@ -1,6 +1,7 @@
 import numpy as np
 from requiredFunctions.gaussX import gaussX
 import matplotlib.pyplot as plt
+from matplotlib import rc
 
 
 """
@@ -8,8 +9,11 @@ b) Generate a plot showing an exampleof the distribution N=500 samples, σ²=1,
 where members of class C₁ are plotted as “blue +” and C₂ are plotted as
 “green x”.
 """
+# generate data set
 np.random.seed(83704)
 samples = gaussX(500, 1)
+
+# split into classes
 samples1 = []
 samples2 = []
 for sample in samples.T:
@@ -18,9 +22,16 @@ for sample in samples.T:
     else:
         samples2.append(sample)
 
+# convert back to arrays
 samples1 = np.array(samples1)
 samples2 = np.array(samples2)
 
+# set font attributes
+font = {'size'   : 16}
+rc('font', **font)
+rc('text', usetex='True')
+
+# plot
 plt.axes(aspect=1)
 plt.xlim(-4, 4)
 plt.ylim(-4, 4)

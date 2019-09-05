@@ -6,30 +6,40 @@ def gaussX(N, variance=1):
     """
     a) Write a function named “gaussX” that returns samples drawn from the
     distribution along with the corresponding class labels.
+
+    Inputs:
+               N - desired number of samples
+        variance - variance of desired circular symmetric Gaussian
     """
-    samples_x1 = []
-    samples_x2 = []
-    classes = []
+    # split N approximately equally
+    first_half = int(N/2)
+    second_half = N - first_half
 
-    for i in range(N):
-        new_sample_r = random.gauss(0, np.sqrt(variance))
-        new_sample_theta = random.uniform(0, 2*np.pi)
-        new_sample_x1 = new_sample_r*np.cos(new_sample_theta)
-        new_sample_x2 = new_sample_r*np.sin(new_sample_theta)
-        if (new_sample_x1 > 0 and new_sample_x2 < 0) or\
-           (new_sample_x1 < 0 and new_sample_x2 > 0):
-            classes.append(1)
+    # identify labels for the classes
+    label_13 = -1
+    label_24 = 1
 
-        elif (new_sample_x1 > 0 and new_sample_x2 > 0) or\
-             (new_sample_x1 < 0 and new_sample_x2 < 0):
-            classes.append(-1)
+    # generate samples of circular symmetric Gaussian for 2nd and 4th quadrants
+    samples_24_r = np.sqrt(variance)*np.random.randn(first_half,1)
+    samples_24_theta = -np.random.rand(first_half,1)*(np.pi/2)
+    samples_24_x1 = samples_24_r*np.cos(samples_24_theta)
+    samples_24_x2 = samples_24_r*np.sin(samples_24_theta)
 
-        samples_x1.append(new_sample_x1)
-        samples_x2.append(new_sample_x2)
+    # generate samples of circular symmetric Gaussian for 1st and 3rd quadrants
+    samples_13_r = np.sqrt(variance)*np.random.randn(first_half,1)
+    samples_13_theta = np.random.rand(first_half,1)*(np.pi/2)
+    samples_13_x1 = samples_13_r*np.cos(samples_13_theta)
+    samples_13_x2 = samples_13_r*np.sin(samples_13_theta)
 
-    samples_x1 = np.array(samples_x1)
-    samples_x2 = np.array(samples_x2)
-    classes = np.array(classes)
+    # combine both classes into single vectors for each coordinate
+    samples_x1 = np.append(samples_24_x1, samples_13_x1)
+    samples_x2 = np.append(samples_24_x2, samples_13_x2)
+
+    # generate label vector
+    classes = np.append(label_24*np.ones((first_half, 1)),
+                        label_13*np.ones((second_half, 1)))
+
+    # combine all into single Nx3 array
     samples = np.array((samples_x1,samples_x2,classes))
 
     return samples

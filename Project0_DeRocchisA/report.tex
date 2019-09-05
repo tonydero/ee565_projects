@@ -52,7 +52,7 @@ A function named "circGauss" was written which returns $N$ samples drawn from a 
 where $\mu_k$ is the mean for the $k$th dimension \cite{b1}. The function was used to generate a data set (shown in figure \ref{fig:circgauss}) consisting of samples drawn from two circular symmetric multi-variate Gaussian distributions in two dimensions with one distribution at the origin and one at the point $(5, 5)$, where both distributions have $\sigma^2 = 3$.
 
 \section{Problem 2: Double Moon Data Set}
-A function named "doublemoon" was written which returns $N$ samples drawn from a double moon distribution \cite{b2}. Figure \ref{fig:doublemoon} shows an example of data drawn from the double moon distribution with parameters $N=500$ samples, $d=0$, $r=1$, and $w=0.6$. In figure \ref{fig2} the members of class $\mathscr{C}_1$ are plotted as "blue +" and $\mathscr{C}_2$ are plotted as "green x".
+A function named "doublemoon" was written which returns $N$ samples drawn from a double moon distribution \cite{b2}. Figure \ref{fig:doublemoon} shows an example of data drawn from the double moon distribution with parameters $N=500$ samples, $d=0$, $r=1$, and $w=0.6$. In figure \ref{fig:doublemoon} the members of class $\mathscr{C}_1$ are plotted as "blue +" and $\mathscr{C}_2$ are plotted as "green x".
 
 \section{Problem 3: Concentric Gaussian Data Set}
 A function named "concentGauss" was written which returns $N$ samples drawn from a data set consisting of a circular symmetric Gaussian centered at the origin with variance $\sigma^2_{center}$ and a Gaussian annulus centered at the origin with radius mean $r$ and variance $\sigma^2_{outer}$. Figure \ref{fig:concentgauss} shows an example of data drawn from the concentric Gaussian data set with $N=500$ samples, $\sigma^2_{center}=1$, $r=5$, and $\sigma^2_{outer}=1$ with members of class $\mathscr{C}_1$ plotted as "blue +" and class $\mathscr{C}_2$ plotted as "green x". 
@@ -65,7 +65,7 @@ A function named "gaussX" was written which returns $N$ samples drawn from a Gau
 A function named "noisySin" was written which returns $N$ samples drawn from a noisy sine distribution with a sinusoidal amplitude of $1$ and period $2\pi$, where the added noise has a variance $\sigma^2$. Figure \ref{fig:noisysingen} shows an example of data drawn from a noisy sine data set with $N=50$ samples and $\sigma^2=0.05$, where the noise-added sinusoidal data is plotted as "blue o" and the clean sinusoidal waveform is plotted as a green curve.
 
 \subsection{Loading from File}
-To demonstrate the instance of needing to use a pre-existing, given, data set, the file "curvefitting.txt" was loaded. The data set consists of input $x$ and target $t$ values. This set was plotted, as shown in figure \ref{fig:noisysinfile}, using the same method as section \ref{section:randomgen}, with the noise-added sinusoidal data plotted as "blue o", and the clean sinusoid plotted as a green curve.
+To demonstrate the instance of needing to use a pre-existing, given, data set, the file "curvefitting.txt" was loaded. The data set consists of input $x$ and target $t$ values. These values were plotted, as shown in figure \ref{fig:noisysinfile}, using the same method as section \ref{section:randomgen}, with the noise-added sinusoidal data plotted as "blue o", and the clean sinusoid plotted as a green curve.
 
 \section{Problem 6: Old Faithful Data Set}
 The Old Faithful data set was loaded from the file "faithful.txt" and plotted. The results are shown in figure \ref{fig:oldfaithful}.
@@ -83,52 +83,53 @@ In this project I loaded, generated, and visualized several data sets which will
 \end{thebibliography}
 
 \begin{figure}[p!]
-\centerline{\includegraphics[trim=70 0 85 0, clip, width=\columnwidth]{Figure_1.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=\columnwidth]{Figure_1.png}}
+\caption{A data set consisting of samples drawn from two circular symmetric multi-variate Gaussian distributions with paramters $\sigma^2=3$ and $\mu=(0,0)$ for one and $\mu=(5,5)$ for the other.}
 \label{fig:circgauss}
 \end{figure}
 
 \begin{figure}[p!]
-\centerline{\includegraphics[trim=60 0 85 0, clip, width=\columnwidth]{Figure_2.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=\columnwidth]{Figure_2.png}}
+\caption{A data set consisting of samples drawn from a double moon distribution with parameters $N=500$ samples, $d=0$, $r=1$, and $w=0.6$. The members of class $\mathscr{C}_1$ are plotted as "blue +" and $\mathscr{C}_2$ as "green x". }
 \label{fig:doublemoon}
 \end{figure}
 
 \clearpage
 
 \begin{figure}[p!]
-\centerline{\includegraphics[trim=65 0 85 0, clip, width=\columnwidth]{Figure_3.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=\columnwidth]{Figure_3.png}}
+\caption{A data set consisting of samples drawn from a circular symmetric Gaussian centered at the origin with variance $\sigma^2_{center}$ and a Gaussian annulus centered at the origin with radius mean $r$ and variance $\sigma^2_{outer}$ with parameters $N=500$ samples, $\sigma^2_{center}=1$, $r=5$, and $\sigma^2_{outer}=1$. Members of class $\mathscr{C}_1$ are plotted as "blue +" and class $\mathscr{C}_2$ plotted as "green x".}
 \label{fig:concentgauss}
 \end{figure}
 
 \begin{figure}[p!]
-\centerline{\includegraphics[trim=70 0 85 0, clip, width=\columnwidth]{Figure_4.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=\columnwidth]{Figure_4.png}}
+\caption{A data set consisting of samples drawn from a Gaussian XOR distribution with parameters $N=500$ samples and $\sigma^2=1$. Members of class $\mathscr{C}_1$ are plotted as "blue +" and members of $\mathscr{C}_2$ as "green x".
+}
 \label{fig:gaussx}
 \end{figure}
 
 \begin{figure}[p!]
-\centerline{\includegraphics[trim=20 0 40 0, clip, width=\columnwidth]{Figure_5.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=\columnwidth]{Figure_5.png}}
+\caption{A data set consisting of samples drawn from a noisy sine distribution with a sinusoidal amplitude of $1$ and period $2\pi$, where the added noise has a variance $\sigma^2$ with parameters $N=50$ samples and $\sigma^2=0.05$. The noise-added sinusoidal data is plotted as "blue o" and the clean sinusoidal waveform is plotted as a green curve.}
 \label{fig:noisysingen}
 \end{figure}
 
 \begin{figure}[p!]
 \centerline{\includegraphics[trim=20 0 40 0, clip, width=\columnwidth]{Figure_6.png}}
-\caption{Example of a figure caption.}
+\caption{The data set read from the file "curvefitting.txt" plotted as "blue o" on top of a clean sinusoidal waveform plotted as a green curve.}
 \label{fig:noisysinfile}
 \end{figure}
 
 \begin{figure*}[p!]
-\centerline{\includegraphics[trim=70 0 70 0, clip, width=300]{Figure_7.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=0 0 0 0, clip, width=300]{Figure_7.png}}
+\caption{The data set read from the file "faithful.txt" and plotted.}
 \label{fig:oldfaithful}
 \end{figure*}
 
 \begin{figure*}[p!]
-\centerline{\includegraphics[trim=20 0 40 0, clip, width=340]{Figure_8.png}}
-\caption{Example of a figure caption.}
+\centerline{\includegraphics[trim=30 0 30 0, clip, width=360]{Figure_8.png}}
+\caption{The data set read from the file "spikes.csv", with the amplitudes scaled up by a factor of $10^4$ and plotted.}
 \label{fig:neuralspikes}
 \end{figure*}
 

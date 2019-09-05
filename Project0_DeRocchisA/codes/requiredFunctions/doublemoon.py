@@ -6,36 +6,43 @@ def doublemoon(N, d=0, r=1, w=0.5):
     """
     a) Write a function named “doublemoon” that returns samples drawn from the
     distribution along with the corresponding class labels.
+
+    Inputs:
+        N - desired number of samples
+        d - distance of bottom crescent from horizontal axis
+        r - radius of both crescents and distance of bottom crescent from
+            vertical axis
+        w - width of each crescent
     """
-    samples_x1 = []
-    samples_x2 = []
-    classes = []
+    # split N approximately equally
+    first_half = int(N/2)
+    second_half = N - first_half
 
-    for i in range(N):
-        if i%2 == 0:
-            new_sample_r = random.uniform(r-(w/2), r+(w/2))
-            new_sample_theta = random.uniform(0, np.pi)
-            new_sample_x1 = new_sample_r*np.cos(new_sample_theta)
-            new_sample_x2 = new_sample_r*np.sin(new_sample_theta)
+    # identify labels for the classes
+    top_label = 1
+    bot_label = -1
 
-            classes.append(1)
+    # generate samples of top crescent
+    samples_top_r = w*np.random.rand(first_half,1) + r - (w/2)
+    samples_top_theta = np.random.rand(first_half,1)*np.pi
+    samples_top_x1 = samples_top_r*np.cos(samples_top_theta)
+    samples_top_x2 = samples_top_r*np.sin(samples_top_theta)
 
-        elif i%2 == 1:
-            radius = r
-            r = d+r
-            new_sample_r = random.uniform(r-(w/2), r+(w/2))
-            new_sample_theta = random.uniform(0, np.pi)
-            new_sample_x1 = new_sample_r*np.cos(new_sample_theta)+radius
-            new_sample_x2 = -new_sample_r*np.sin(new_sample_theta)
+    # generate samples of bottom crescent
+    samples_bot_r = w*np.random.rand(second_half,1) + r - (w/2)
+    samples_bot_theta = np.random.rand(second_half,1)*np.pi
+    samples_bot_x1 = samples_bot_r*np.cos(samples_bot_theta) + r
+    samples_bot_x2 = -samples_bot_r*np.sin(samples_bot_theta)
 
-            classes.append(-1)
+    # combine both classes into single vectors for each coordinate
+    samples_x1 = np.append(samples_top_x1, samples_bot_x1)
+    samples_x2 = np.append(samples_top_x2, samples_bot_x2)
 
-        samples_x1.append(new_sample_x1)
-        samples_x2.append(new_sample_x2)
+    # generate label vector
+    classes = np.append(top_label*np.ones((first_half, 1)),
+                        bot_label*np.ones((second_half, 1)))
 
-    samples_x1 = np.array(samples_x1)
-    samples_x2 = np.array(samples_x2)
-    classes = np.array(classes)
+    # combine all into single Nx3 array
     samples = np.array((samples_x1,samples_x2,classes))
 
     return samples
