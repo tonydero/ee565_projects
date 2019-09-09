@@ -40,7 +40,7 @@ def concentGauss(N, r=5, var_center=1, var_outer=1):
                         label_center*np.ones((second_half, 1)))
 
     # combine all into single Nx3 array
-    samples = np.array((samples_x1,samples_x2,classes))
+    samples = np.concatentate((samples_x1,samples_x2,classes),axis=1)
 
     return samples
 

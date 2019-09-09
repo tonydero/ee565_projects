@@ -43,7 +43,7 @@ def doublemoon(N, d=0, r=1, w=0.5):
                         bot_label*np.ones((second_half, 1)))
 
     # combine all into single Nx3 array
-    samples = np.array((samples_x1,samples_x2,classes))
+    samples = np.concatenate((samples_x1,samples_x2,classes),axis=1)
 
     return samples
 

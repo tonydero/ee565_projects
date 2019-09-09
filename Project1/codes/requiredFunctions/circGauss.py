@@ -19,7 +19,7 @@ def circGauss(N, mean=(0,0), variance=1):
     samples_x2 = np.sqrt(variance)*np.random.randn(N, 1) + mean[1]
 
     # combine into single Nx2 array
-    samples = np.array((samples_x1,samples_x2))
+    samples = np.concatenate((samples_x1,samples_x2),axis=1)
 
     return samples
 

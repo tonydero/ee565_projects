@@ -21,7 +21,7 @@ def noisySin(N, noise_var=1):
     t_samples = np.sin(2*np.pi*x_samples) + noise
 
     # combine the x coordinate and amplitude for each of the N samples
-    samples = np.array((x_samples, t_samples))
+    samples = np.concatenate((x_samples, t_samples),axis=1)
 
     return samples
 

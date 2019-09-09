@@ -1,5 +1,6 @@
 import numpy as np
 from requiredFunctions.circGauss import circGauss
+from requiredFunctions.kmeans import kMeansBatch
 import matplotlib.pyplot as plt
 from matplotlib import rc
 
@@ -15,6 +16,10 @@ distributions in equal proportions.
 np.random.seed(83704)
 samples_0 = circGauss(250, (0, 0), 3)
 samples_5 = circGauss(250, (5, 5), 3)
+samples = np.concatenate((samples_0,samples_5),axis=0)
+means, cluster_ind, total_iter = kMeansBatch(samples,2)
+cluster_1 = samples[np.where(cluster_ind[:,0]==1)]
+cluster_2 = samples[np.where(cluster_ind[:,1]==1)]
 
 # set font attributes
 font = {'family' : 'Serif',
@@ -29,8 +34,8 @@ plt.ylim(-5, 10)
 plt.xticks([-5, 0, 5, 10])
 plt.yticks([-5, 0, 5, 10])
 plt.tick_params(direction='in', top=1, right=1)
-plt.scatter(samples_0[0], samples_0[1], s=3, c='b')
-plt.scatter(samples_5[0], samples_5[1], s=3, c='b')
+plt.scatter(cluster_1[:,0], cluster_1[:,1], s=3, c='b')
+plt.scatter(cluster_2[:,0], cluster_2[:,1], s=3, c='lime')
 plt.xlabel('$x_{1}$')
 plt.ylabel('$x_{2}$')
 plt.grid(color='k', linestyle='--', alpha=0.2)
