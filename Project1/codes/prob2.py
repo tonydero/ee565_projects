@@ -1,47 +1,40 @@
 import numpy as np
-from requiredFunctions.doublemoon import doublemoon
+from requiredFunctions.circGauss import circGauss
+from requiredFunctions.kMeans import kMeansOnline
 import matplotlib.pyplot as plt
 from matplotlib import rc
 
 
 """
-b) Generate a plot of an example double moon distribution N=500 samples,
-d=0, r=1, and w=0.6 where members of class C1 are plotted as “blue +” and
-C2 are plotted as “green x”.
+a)
 """
-# generate data set
-np.random.seed(83704)
-samples = doublemoon(500, 0, 1, 0.6)
-
-# split into classes
-samples1 = []
-samples2 = []
-for sample in samples.T:
-    if sample[2] == 1:
-        samples1.append(sample)
-    else:
-        samples2.append(sample)
-
-# convert back to arrays
-samples1 = np.array(samples1)
-samples2 = np.array(samples2)
-
 # set font attributes
-font = {'size'   : 16}
+font = {'family' : 'Serif',
+        'size'   : 16}
 rc('font', **font)
-rc('text', usetex='True')
 
-# plot
-plt.axes(aspect=1)
-plt.xlim(-3, 3)
-plt.ylim(-3, 3)
-plt.xticks([-3, -2, -1, 0, 1, 2, 3])
-plt.yticks([-3, -2, -1, 0, 1, 2, 3])
+plt.xlim(-10, 300)
+plt.ylim(0, 0.0002)
+plt.xticks(np.arange(0,350,50))
+plt.yticks(np.arange(0,0.0003,0.0001))
 plt.tick_params(direction='in', top=1, right=1)
-plt.scatter(samples1[:,0], samples1[:,1], s=33, c='b', marker='+')
-plt.scatter(samples2[:,0], samples2[:,1], s=25, c='lime', marker='x')
-plt.legend(['$target: +1$', '$target: -1$'])
-plt.xlabel('$x_{1}$')
-plt.ylabel('$x_{2}$')
+
+# generate the two Gaussian sets
+np.random.seed(83704)
+samples_0 = circGauss(250, (0, 0), 3)
+samples_5 = circGauss(250, (5, 5), 3)
+samples = np.concatenate((samples_0,samples_5),axis=0)
+for eta in np.arange(0.00001,0.0002,0.00003):
+    epoch_list = []
+    for rep in range(10):
+        means, centroid_ind, epochs, old_means = kMeansOnline(samples,2,eta,0.0001)
+        epoch_list.append(epochs)
+    mean_epochs = np.mean(epoch_list)
+    print(mean_epochs, eta)
+    plt.scatter(mean_epochs, eta, color='g')
+plt.xlabel('# Epoch Iterations')
+plt.ylabel('$\eta$')
 plt.grid(color='k', linestyle='--', alpha=0.2)
-plt.show()
+plt.savefig('../p2pa.pdf')
+plt.clf()
+

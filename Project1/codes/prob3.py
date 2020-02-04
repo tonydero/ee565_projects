@@ -1,47 +1,155 @@
 import numpy as np
-from requiredFunctions.concentGauss import concentGauss
+from requiredFunctions.kMeans import kMeansBatch
 import matplotlib.pyplot as plt
 from matplotlib import rc
+from distutils.spawn import find_executable
+import imageio
+from PIL import Image
 
 
 """
-b) Generate a plot showing an example of the distribution N=500 samples,
-σ²center=1, r=5, and σ²outer=1 where members of class C₁ are plotted as
-“blue +” and C₂ are plotted as “green x”.
+a-e) Use centroids of each image on itself, then "nature-1.png" on "machine-learning-1.png" and "Nature-Brain.png", then "machine-learning-1.png" on "nature-1.png" and "Nature-Brain.png" on "nature-1.png" each with K=4 and K=8.
 """
-# generate data set
-np.random.seed(83704)
-samples = concentGauss(500, 5, 1, 1)
+for K in [8,16]:
+    img_n1 = imageio.imread('../data/nature-1.png')
+    img_rgb_n1 = img_n1[:,:,:3]
+    n1_x0 = int(img_rgb_n1.shape[0]/3)
+    n1_x1 = int(img_rgb_n1.shape[1]/3)
+    img_rgb_n1 = np.array(Image.fromarray(img_rgb_n1).resize((n1_x0,n1_x1)))
+    plt.imshow(img_rgb_n1)
+    plt.axis('off')
+    plt.savefig('../p3_n1_third.pdf')
+    plt.clf()
+    num_points_n1 = n1_x0*n1_x1
+    img_rgb_data_n1 = img_rgb_n1.reshape(num_points_n1, img_rgb_n1.shape[2])/255
+    results_n1 = kMeansBatch(img_rgb_data_n1, K, iter_ind=True)
+    means_n1 = results_n1[0]
+    ind_vars_n1 = results_n1[1]
 
-# split into classes
-samples1 = []
-samples2 = []
-for sample in samples.T:
-    if sample[2] == 1:
-        samples1.append(sample)
-    else:
-        samples2.append(sample)
+    img_ml1 = imageio.imread('../data/machine-learning-1.png')
+    img_rgb_ml1 = img_ml1[:,:,:3]
+    ml1_x0 = int(img_rgb_ml1.shape[0]/3)
+    ml1_x1 = int(img_rgb_ml1.shape[1]/3)
+    img_rgb_ml1 = np.array(Image.fromarray(img_rgb_ml1).resize((ml1_x0,ml1_x1)))
+    plt.imshow(img_rgb_ml1)
+    plt.axis('off')
+    plt.savefig('../p3_ml1_third.pdf')
+    plt.clf()
+    num_points_ml1 = ml1_x0*ml1_x1
+    img_rgb_data_ml1 = img_rgb_ml1.reshape(num_points_ml1, img_rgb_ml1.shape[2])/255
+    results_ml1 = kMeansBatch(img_rgb_data_ml1, K, iter_ind=True)
+    means_ml1 = results_ml1[0]
+    ind_vars_ml1 = results_ml1[1]
 
-# convert back to arrays
-samples1 = np.array(samples1)
-samples2 = np.array(samples2)
+    img_nb = imageio.imread('../data/Nature-Brain.png')
+    img_rgb_nb = img_nb[:,:,:3]
+    nb_x0 = int(img_rgb_nb.shape[0]/3)
+    nb_x1 = int(img_rgb_nb.shape[1]/3)
+    img_rgb_nb = np.array(Image.fromarray(img_rgb_nb).resize((nb_x0,nb_x1)))
+    plt.imshow(img_rgb_nb)
+    plt.axis('off')
+    plt.savefig('../p3_nb_third.pdf')
+    plt.clf()
+    num_points_nb = nb_x0*nb_x1
+    img_rgb_data_nb = img_rgb_nb.reshape(num_points_nb, img_rgb_nb.shape[2])/255
+    results_nb = kMeansBatch(img_rgb_data_nb, K, iter_ind=True)
+    means_nb = results_nb[0]
+    ind_vars_nb = results_nb[1]
 
-# set font parameters
-font = {'size'   : 16}
-rc('font', **font)
-rc('text', usetex='True')
+    # find the closest centroid from "nature-1.png" to "machine-learning-1.png" points
+    ind_vars_n1_ml1 = np.zeros((num_points_ml1,K))
+    distances_n1_ml1 = np.zeros((num_points_ml1,K))
+    for j in range(K):
+        distances_n1_ml1[:, j] = np.array([pow(np.linalg.norm(point - means_n1[j]),2)
+                                    for point in img_rgb_data_ml1]).T
+    I_n1_ml1 = np.argmin(distances_n1_ml1, axis=1)
+    ind_vars_n1_ml1[range(num_points_ml1), I_n1_ml1[range(num_points_ml1)]] = 1
 
-# plot
-plt.axes(aspect=1)
-plt.xlim(-10, 10)
-plt.ylim(-10, 10)
-plt.xticks([-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10])
-plt.yticks([-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10])
-plt.tick_params(direction='in', top=1, right=1)
-plt.scatter(samples1[:,0], samples1[:,1], s=33, c='b', marker='+')
-plt.scatter(samples2[:,0], samples2[:,1], s=25, c='lime', marker='x')
-plt.legend(['$target: +1$', '$target: -1$'])
-plt.xlabel('$x_{1}$')
-plt.ylabel('$x_{2}$')
-plt.grid(color='k', linestyle='--', alpha=0.2)
-plt.show()
+    ind_vars_n1_nb = np.zeros((num_points_nb,K))
+    distances_n1_nb = np.zeros((num_points_nb,K))
+    for j in range(K):
+        distances_n1_nb[:, j] = np.array([pow(np.linalg.norm(point - means_n1[j]),2)
+                                    for point in img_rgb_data_nb]).T
+    I_n1_nb = np.argmin(distances_n1_nb, axis=1)
+    ind_vars_n1_nb[range(num_points_nb), I_n1_nb[range(num_points_nb)]] = 1
+
+    ind_vars_ml1_n1 = np.zeros((num_points_n1,K))
+    distances_ml1_n1 = np.zeros((num_points_n1,K))
+    for j in range(K):
+        distances_ml1_n1[:, j] = np.array([pow(np.linalg.norm(point - means_ml1[j]),2)
+                                    for point in img_rgb_data_n1]).T
+    I_ml1_n1 = np.argmin(distances_ml1_n1, axis=1)
+    ind_vars_ml1_n1[range(num_points_n1), I_ml1_n1[range(num_points_n1)]] = 1
+
+    ind_vars_nb_n1 = np.zeros((num_points_n1,K))
+    distances_nb_n1 = np.zeros((num_points_n1,K))
+    for j in range(K):
+        distances_nb_n1[:, j] = np.array([pow(np.linalg.norm(point - means_nb[j]),2)
+                                    for point in img_rgb_data_n1]).T
+    I_nb_n1 = np.argmin(distances_nb_n1, axis=1)
+    ind_vars_nb_n1[range(num_points_n1), I_nb_n1[range(num_points_n1)]] = 1
+
+    # create the data for the new plots and create the plots
+    n1_data = []
+    for ind_point in ind_vars_n1:
+        n1_data.append(means_n1[np.nonzero(ind_point)[0]])
+    n1_data_img = (np.array(n1_data).reshape(img_rgb_n1.shape)*255).astype('uint8')
+    plt.imshow(n1_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pc_{}bit.pdf'.format(K))
+    plt.clf()
+
+    nb_data = []
+    for ind_point in ind_vars_nb:
+        nb_data.append(means_nb[np.nonzero(ind_point)[0]])
+    nb_data_img = (np.array(nb_data).reshape(img_rgb_nb.shape)*255).astype('uint8')
+    plt.imshow(nb_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pb_{}bit.pdf'.format(K))
+    plt.clf()
+
+    ml1_data = []
+    for ind_point in ind_vars_ml1:
+        ml1_data.append(means_ml1[np.nonzero(ind_point)[0]])
+    ml1_data_img = (np.array(ml1_data).reshape(img_rgb_ml1.shape)*255).astype('uint8')
+    plt.imshow(ml1_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pa_{}bit.pdf'.format(K))
+    plt.clf()
+
+    n1_ml1_data = []
+    for ind_point in ind_vars_n1_ml1:
+        n1_ml1_data.append(means_n1[np.nonzero(ind_point)[0]])
+    n1_ml1_data_img = (np.array(n1_ml1_data).reshape(img_rgb_ml1.shape)*255).astype('uint8')
+    plt.imshow(n1_ml1_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pd_{}bit_a.pdf'.format(K))
+    plt.clf()
+
+    n1_nb_data = []
+    for ind_point in ind_vars_n1_nb:
+        n1_nb_data.append(means_n1[np.nonzero(ind_point)[0]])
+    n1_nb_data_img = (np.array(n1_nb_data).reshape(img_rgb_nb.shape)*255).astype('uint8')
+    plt.imshow(n1_nb_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pd_{}bit_b.pdf'.format(K))
+    plt.clf()
+
+    ml1_n1_data = []
+    for ind_point in ind_vars_ml1_n1:
+        ml1_n1_data.append(means_ml1[np.nonzero(ind_point)[0]])
+    ml1_n1_data_img = (np.array(ml1_n1_data).reshape(img_rgb_n1.shape)*255).astype('uint8')
+    plt.imshow(ml1_n1_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pe_{}bit_a.pdf'.format(K))
+    plt.clf()
+
+    nb_n1_data = []
+    for ind_point in ind_vars_nb_n1:
+        nb_n1_data.append(means_nb[np.nonzero(ind_point)[0]])
+    nb_n1_data_img = (np.array(nb_n1_data).reshape(img_rgb_n1.shape)*255).astype('uint8')
+    plt.imshow(nb_n1_data_img)
+    plt.axis('off')
+    plt.savefig('../p3pe_{}bit_b.pdf'.format(K))
+    plt.clf()
+

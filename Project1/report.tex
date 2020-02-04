@@ -13,7 +13,7 @@
 \begin{document}
 
 \title{EE 565 Machine Learning\\
-Project 0 Report\\
+Project 1 Report\\
 \thanks{The author is with the Klipsch School of Electrical and Computer Engineering, New Mexico State University (NMSU), Las Cruces NM 88003 USA. e-mail: tonydero@nmsu.edu}
 }
 
@@ -23,7 +23,7 @@ Project 0 Report\\
 
 \begin{abstract}
 
-In this report I explore the creation and visualization of randomly generated synthetic data sets. These data sets are to be used in subsequent projects for test and evaluation of algorithm performance. In addition to the randomly generated data sets, I also visualize some predefined data sets by loading the relevant data from files and plotting.
+In this report I explore the results of applying various Machine Learning algorithms to randomly generated synthetic data sets. These data sets are to be used in subsequent projects for test and evaluation of algorithm performance. In addition to the randomly generated data sets, I also visualize some predefined data sets by loading the relevant data from files and plotting.
 
 \end{abstract}
 
@@ -33,9 +33,34 @@ In this report I explore the creation and visualization of randomly generated sy
 
 \section{Introduction}
 
-This document is an example of a project report. The document shall be formatted in accordance with the IEEE Transactions journals templates. Each report will consist of an introduction, a section (or subsection) for each problem part, a conclusion, and references. Each figure will be numbered with a caption, well-labeled (axes, color, symbols, etc.), and shall be called out at least once in the report text. I will attempt to be as concise as possible, whilst still fully addressing all problem parts.
+This is a report of my solutions and findings from Project 1. I have created functions implementing the K-Means (batch and online versions), Polynomial Regression, and K-Nearest Neighbors algorithms. Attempts were made to vectorize as much of it as possible to improve performance, however the algorithms are far from optimal in their current states. Additionally, I will discuss the effects of changing various factors in several of the problems on their respective solutions.
 
-\section{Problem 1: Circular Symmetric Gaussian}
+\section{Problem 1: Batch $K$-means}
+\subsection{Circular Symmetric Gaussians Data Set and $K=2$}
+First, I looked at how well the batch version of the $K$-means algorithm was able to recover the true data centers as the centroids while varying the number of training data points from 10 to 500. Figure \ref{fig:p1pa} shows the number of training points versus the error. The error is calculated as the sum of the Euclidean distance from the actual centers to the respective centroid locations estimated using $K$-means.
+
+Next, I looked at how the initialization of the centroids affects the outcome. Instead of randomly initializing the centroids to a set of $K$ training points, I manually initialized them both to (0,0), and then to (100,0) and (0,0). In the former case #TODO, but in the latter case, they did not converge properly, as all points were associated with a single centroid upon convergence.
+
+For the final experiment using $K=2$, I considered a data set consisting of 50 data points, and looked at how many iterations it took to converge, on average. The mean value was approximately $3.76$, with a minimum of $2$ iterations, and a maximum of $7$ iterations.
+
+\subsection{Circular Symmetric Gaussians Data Set and $K\geq2$}
+Again using a set of 50 data points, I examined what happens to the cost function $J$ as $K$ took on values in the range of 2 to 20. Figure \ref{fig:p1pd} shows that as $K$ increased, $J$ decreased.
+
+Then I examined the effect of three various initializations on a data set of 50 points with $K=5$. Figure \ref{fig:p1pe} shows that unless the centroids were initialized very poorly, two of the five at least converged in the right direction, with the orange "x" representing the initialization points, and the red "+" representing the location of the centroids upon convergence.
+
+\section{Problem 2: Online $K$-means}
+\subsection{Circular Symmetric Gaussians Data Set and $K=2$}
+Next, I examined the effect of varying the learning rate, $\eta$, on the number of epoch iterations. Figure \ref{fig:p2pa} shows that smaller values of $\eta$ result in fewer epoch iterations until convergence.
+
+\section{Problem 3: $K$-means Application: Image Segmentation}
+\section{Problem 4: Polynomial Curve Fitting}
+\subsection{Model Selection}
+\subsection{Training Data Size}
+\section{Problem 5: Polynomial Regression with Regularization}
+\section{Problem 6: $K$-Nearest Neighbors Classification}
+\subsection{Concentric Gaussians Data Set}
+\subsection{Double Moon Data Set}
+\subsection{Gaussian XOR Data Set}
 
 A function named "circGauss" was written which returns $N$ samples drawn from a circular symmetric multi-variate Gaussian distribution of dimension $D$ with variance $\sigma^2$
 
